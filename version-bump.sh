@@ -41,7 +41,7 @@ if git log -1 | grep -q "#major"; then
   BUMP_MODE="major"
 elif git log -1 | grep -q "#minor"; then
   BUMP_MODE="minor"
-elif git log -1 | grep -q "#patch"; then
+else
   BUMP_MODE="patch"
 fi
 
