@@ -2,8 +2,8 @@
 
 A simple GitHub Actions to bump the version of Maven projects.
 
-When triggered, this action will look at the commit message of HEAD~1 and determine if it contains one of `#major`, `#minor`, or `#patch` (in that order of precedence).
-If true, it will use Maven to bump your pom's version.
+When triggered, this action will look at the commit message of HEAD~1 and determine if it contains one of `#major` or `#minor` (in that order of precedence).
+If true, it will use Maven to bump your pom's version by the X.x.x major or x.X.x minor version respectively. All other commits will cause a bump in the x.x.X patch version.
 
 For example, a `#minor` update to version `1.3.9` will result in the version changing to `1.4.0`.
 The change will then be committed.
