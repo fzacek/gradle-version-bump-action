@@ -1,6 +1,6 @@
 # ref: https://help.github.com/en/actions/building-actions/metadata-syntax-for-github-actions
-name: Maven Version Bump Action
-description: A simple GitHub Actions to bump the version of Maven projects
+name: Gradle Version Bump Action
+description: A simple GitHub Actions to bump the version of Gradle projects
 
 author: Nick Nichols
 
@@ -12,8 +12,8 @@ inputs:
   github-token:
     description: 'A GitHub auth token to be able to create the pull request'
     required: true
-  pom-path:
-    description: 'The relative location of your pom.xml file'
+  gradle-path:
+    description: 'The relative location of your build.gradle file'
     required: true
     default: '.'
   git-email:
@@ -38,14 +38,14 @@ runs:
         TOKEN: ${{ inputs.github-token }}
         EMAIL: ${{ inputs.git-email }}
         NAME: ${{ inputs.git-username }}
-        POMPATH: ${{ inputs.pom-path }}
+        GRADLEPATH: ${{ inputs.gradle-path }}
       run: ${{github.action_path}}/version-bump.sh
       shell: bash
     - name: Set outputs
       id: get-outputs
       shell: bash
       env:
-        POMPATH: ${{ inputs.pom-path }}
+        GRADLEPATH: ${{ inputs.gradle-path }}
       run: echo "::set-output name=version::$(${{github.action_path}}/get-version.sh)"
     - name: Result
       shell: bash
