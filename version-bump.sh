@@ -45,6 +45,11 @@ else
   BUMP_MODE="patch"
 fi
 
+BUILD_FILE=$GRADLEPATH/build.gradle
+if [ ! -f "$BUILD_FILE" ] ; then
+    BUILD_FILE=$GRADLEPATH/build.gradle.kts
+fi
+
 if [[ "${BUMP_MODE}" == "none" ]]
 then
   echo "No matching commit tags found."
@@ -53,8 +58,8 @@ else
   echo $BUMP_MODE "version bump detected"
   bump $BUMP_MODE $OLD_VERSION
   echo "build.gradle at " $GRADLEPATH " will be bumped from" $OLD_VERSION "to" $NEW_VERSION
-  sed -i "s/$OLD_VERSION/$NEW_VERSION/" $GRADLEPATH/build.gradle
-  git add $GRADLEPATH/build.gradle
+  sed -i "s/$OLD_VERSION/$NEW_VERSION/" $BUILD_FILE
+  git add $BUILD_FILE
   REPO="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git commit -m "Bump build.gradle from $OLD_VERSION to $NEW_VERSION"
   git tag $NEW_VERSION
