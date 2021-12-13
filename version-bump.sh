@@ -46,8 +46,10 @@ else
 fi
 
 BUILD_FILE=$GRADLEPATH/build.gradle
+TYPE=GROOVY
 if [ ! -f "$BUILD_FILE" ] ; then
     BUILD_FILE=$GRADLEPATH/build.gradle.kts
+    TYPE=KOTLIN
 fi
 
 if [[ "${BUMP_MODE}" == "none" ]]
@@ -58,7 +60,11 @@ else
   echo $BUMP_MODE "version bump detected"
   bump $BUMP_MODE $OLD_VERSION
   echo "build.gradle at " $GRADLEPATH " will be bumped from" $OLD_VERSION "to" $NEW_VERSION
-  sed -i "s/$OLD_VERSION/$NEW_VERSION/" $BUILD_FILE
+  if [ "${TYPE}" == "GROOVY" ]; then
+      sed -i "s/$OLD_VERSION/$NEW_VERSION/" $BUILD_FILE
+  elif [ "${TYPE}" == "KOTLIN" ]; then
+      sed -i "s/version = \"$OLD_VERSION\"/version = \"$NEW_VERSION\"/" $BUILD_FILE
+  fi
   git add $BUILD_FILE
   REPO="https://$GITHUB_ACTOR:$TOKEN@github.com/$GITHUB_REPOSITORY.git"
   git commit -m "Bump build.gradle from $OLD_VERSION to $NEW_VERSION"
